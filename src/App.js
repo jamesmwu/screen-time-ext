@@ -14,7 +14,8 @@ const sites = [
 
 function App() {
   const [items, setItems] = useState(sites);
-  const [time, setTime] = useState('none');
+  const [time, setTime] = useState(0);
+  const [site, setSite] = useState();
 
   useEffect(() => {
     const queryInfo = { active: true, lastFocusedWindow: true };
@@ -22,9 +23,7 @@ function App() {
     chrome.tabs &&
       chrome.tabs.query(queryInfo, (tabs) => {
         const url = tabs[0].url;
-        if (url.includes('youtube.com')) {
-          setTime('on youtube');
-        }
+        setSite(url);
       });
   }, []);
 
@@ -35,8 +34,7 @@ function App() {
         return (
           <div className='entry' key={item.name}>
             <p style={{ marginRight: '0.5rem' }}>{item.name}:</p>
-            <p>{time}</p>
-            {/* <StopWatch /> */}
+            <StopWatch site={site} />
           </div>
         );
       })}
